@@ -6,7 +6,7 @@ function userReducer(state, action) {
     case 'LOGOUT':
       return ''
     default:
-      throw new Error()
+      return state
   }
 }
 
@@ -20,7 +20,7 @@ function postsReducer(state, action) {
       }
       return [newPost, ...state]  
     default:
-      throw new Error();
+      return state
   }
 }
 
