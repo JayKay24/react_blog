@@ -1,9 +1,12 @@
-import React, { useReducer, useEffect } from 'react'
+import React, { useReducer, useEffect, useState } from 'react'
 
 import PostList from './post/PostList'
 import CreatePost from './post/CreatePost'
 import UserBar from './user/UserBar'
 import appReducer from './reducers'
+import Header from './Header'
+import ChangeTheme from './ChangeTheme'
+import { ThemeContext, StateContext } from './contexts'
 
 const defaultPosts = [
   {
@@ -18,33 +21,36 @@ const defaultPosts = [
   }
 ]
 
+const headerTitle = 'React Hooks Blog'
+
 export default function App() {
   const [state, dispatch] = useReducer(appReducer, { user: '', posts: defaultPosts })
+  const [theme, setTheme] = useState({ primaryColor: 'deepskyblue', secondaryColor: 'coral' })
   const { user, posts } = state
   
   useEffect(() => {
     if(user) {
-      document.title = `${user} - React Hooks blog`
+      document.title = `${user} - ${headerTitle}`
     } else {
-      document.title = 'React Hooks Blog'
+      document.title = headerTitle
     }
   }, [user])
 
   return (
-    <div style={{ padding: 8 }}>
-      <UserBar user={user} dispatch={dispatch} />
-      <br />
-      {
-        user && 
-        <CreatePost 
-          user={user} 
-          posts={posts} 
-          dispatch={dispatch}
-        />
-      }
-      <br />
-      <hr />
-      <PostList posts={posts} />
-    </div>
+    <StateContext.Provider value={{ state, dispatch }}>
+      <ThemeContext.Provider value={theme}>
+        <div style={{ padding: 8 }}>
+          <Header text={headerTitle} />
+          <ChangeTheme theme={theme} setTheme={setTheme} />
+          <br />
+          <UserBar />
+          <br />
+          { user && <CreatePost /> }
+          <br />
+          <hr />
+          <PostList />
+        </div>
+      </ThemeContext.Provider>
+    </StateContext.Provider>
   )
 }
