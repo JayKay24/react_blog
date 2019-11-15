@@ -18,7 +18,9 @@ function postsReducer(state, action) {
         content: action.content, 
         author: action.author 
       }
-      return [newPost, ...state]  
+      return [newPost, ...state]
+    case 'FETCH_POSTS':
+      return action.posts
     default:
       return state
   }

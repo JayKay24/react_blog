@@ -6,27 +6,22 @@ import UserBar from './user/UserBar'
 import appReducer from './reducers'
 import Header from './Header'
 import ChangeTheme from './ChangeTheme'
+
 import { ThemeContext, StateContext } from './contexts'
 
-const defaultPosts = [
-  {
-    title: 'React Hooks',
-    content: 'The greatest thing since sliced bread!',
-    author: 'James Kinyua'
-  },
-  {
-    title: 'Using React Fragments',
-    content: 'Keeping the DOM tree clean!',
-    author: 'James Kinyua'
-  }
-]
 
 const headerTitle = 'React Hooks Blog'
 
 export default function App() {
-  const [state, dispatch] = useReducer(appReducer, { user: '', posts: defaultPosts })
+  const [state, dispatch] = useReducer(appReducer, { user: '', posts: []})
   const [theme, setTheme] = useState({ primaryColor: 'deepskyblue', secondaryColor: 'coral' })
-  const { user, posts } = state
+  const { user } = state
+
+  useEffect(() => {
+    fetch('/api/posts')
+      .then(result => result.json())
+      .then(posts => dispatch({ type: 'FETCH_POSTS', posts }))
+  }, [])
   
   useEffect(() => {
     if(user) {
