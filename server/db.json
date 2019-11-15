@@ -1,14 +1,56 @@
 {
   "posts": [
-    { "id": "react-hooks", "title": "React Hooks", "content": "The greatest thing since sliced bread!", "author": "James Kinyua" },
-    { "id": "react-fragments", "title": "Using React Fragments", "content": "Keeping the DOM tree clean!", "author": "James Kinyua" }
+    {
+      "id": "react-hooks",
+      "title": "React Hooks",
+      "content": "The greatest thing since sliced bread!",
+      "author": "James Kinyua"
+    },
+    {
+      "id": "react-fragments",
+      "title": "Using React Fragments",
+      "content": "Keeping the DOM tree clean!",
+      "author": "James Kinyua"
+    },
+    {
+      "title": "The Lighthouse",
+      "content": "Damn ye Winslow! Let Neptune strike ye dead! Haarrrkkkk!!!!",
+      "author": "James Kinyua",
+      "id": "W2bpzbK"
+    }
   ],
   "users": [
-    { "id": 1, "username": "James Kinyua", "password": "supersecure42" }
+    {
+      "id": 1,
+      "username": "James Kinyua",
+      "password": "supersecure42"
+    },
+    {
+      "username": "Ruth Waiganjo",
+      "password": "njeri",
+      "id": 2
+    },
+    {
+      "username": "ruth@example.com",
+      "password": "ruthwaiganjo",
+      "id": 3
+    }
   ],
   "themes": [
-      { "id": 1, "primaryColor": "deepskyblue", "secondaryColor": "coral" },
-      { "id": 2, "primaryColor": "orchid", "secondaryColor": "mediumseagreen" },
-      { "id": 3, "primaryColor": "darkslategray", "secondaryColor": "slategray" }
+    {
+      "id": 1,
+      "primaryColor": "deepskyblue",
+      "secondaryColor": "coral"
+    },
+    {
+      "id": 2,
+      "primaryColor": "orchid",
+      "secondaryColor": "mediumseagreen"
+    },
+    {
+      "id": 3,
+      "primaryColor": "darkslategray",
+      "secondaryColor": "slategray"
+    }
   ]
 }

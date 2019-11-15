@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import { useResource   } from 'react-request-hook'
 
 import { StateContext } from '../contexts'
 
@@ -6,6 +7,11 @@ export default function CreatePost() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const { state, dispatch} = useContext(StateContext)
+  const [ , createPost] = useResource(({ title, content, author }) => ({
+    url: '/posts',
+    method: 'post',
+    data: { title, content, author }
+  }))
   const { user } = state
 
   function handleTitle(evt) {
@@ -18,6 +24,9 @@ export default function CreatePost() {
 
   function handleCreate() {
     const newPost = { title, content, author: user }
+    // here, we are not handling the failure of post creation, but it is good practice to 
+    // always handle error states in real-world applications
+    createPost({ ...newPost })
     dispatch({ type: 'CREATE_POST', ...newPost })
   }
 
