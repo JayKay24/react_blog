@@ -2,11 +2,8 @@ import React, { useReducer, useEffect, useState } from 'react'
 import { useResource } from 'react-request-hook'
 
 import PostList from './post/PostList'
-import CreatePost from './post/CreatePost'
-import UserBar from './user/UserBar'
+import HeaderBar from './pages/HeaderBar'
 import appReducer from './reducers'
-import Header from './Header'
-import ChangeTheme from './ChangeTheme'
 
 import { ThemeContext, StateContext } from './contexts'
 
@@ -37,15 +34,7 @@ export default function App() {
     <StateContext.Provider value={{ state, dispatch }}>
       <ThemeContext.Provider value={theme}>
         <div style={{ padding: 8 }}>
-          <Header text={headerTitle} />
-          <ChangeTheme theme={theme} setTheme={setTheme} />
-          <br />
-          <React.Suspense fallback={"Loading..."}>
-            <UserBar />
-          </React.Suspense>
-          <br />
-          { user && <CreatePost /> }
-          <br />
+          <HeaderBar setTheme={setTheme} />
           <hr />
           {error && <b>{error}</b>}
           <PostList />
