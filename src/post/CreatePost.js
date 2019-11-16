@@ -6,7 +6,7 @@ import { StateContext } from '../contexts'
 export default function CreatePost() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const { state, dispatch} = useContext(StateContext)
+  const { state, dispatch } = useContext(StateContext)
   const [ , createPost] = useResource(({ title, content, author }) => ({
     url: '/posts',
     method: 'post',
