@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useResource   } from 'react-request-hook'
+import { useNavigation } from 'react-navi'
 
 import { StateContext } from '../contexts'
 
@@ -7,11 +8,20 @@ export default function CreatePost() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const { state, dispatch } = useContext(StateContext)
-  const [ , createPost] = useResource(({ title, content, author }) => ({
+  const [post ,createPost] = useResource(({ title, content, author }) => ({
     url: '/posts',
     method: 'post',
     data: { title, content, author }
   }))
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    if(post && post.data) {
+      dispatch({ type: 'CREATE_POST', ...post.data })
+      navigation.navigate(`/view/${post.data.id}`)
+    }
+  })
   const { user } = state
 
   function handleTitle(evt) {
@@ -27,7 +37,6 @@ export default function CreatePost() {
     // here, we are not handling the failure of post creation, but it is good practice to 
     // always handle error states in real-world applications
     createPost({ ...newPost })
-    dispatch({ type: 'CREATE_POST', ...newPost })
   }
 
   return (
