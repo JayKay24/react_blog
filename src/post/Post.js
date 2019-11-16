@@ -3,7 +3,6 @@ import React, { useContext } from 'react'
 import { ThemeContext } from '../contexts'
 
 function Post({ title, content, author }) {
-  console.log('rendering post')
   const { secondaryColor } = useContext(ThemeContext)
 
   return (
