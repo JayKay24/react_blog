@@ -1,12 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useResource   } from 'react-request-hook'
 import { useNavigation } from 'react-navi'
+import { useInput } from 'react-hookedup'
 
 import { StateContext } from '../contexts'
 
 export default function CreatePost() {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  const { value: title, bindToInput: bindTitle } = useInput('')
+  const { value: content, bindToInput: bindContent } = useInput('')
   const { state, dispatch } = useContext(StateContext)
   const [post ,createPost] = useResource(({ title, content, author }) => ({
     url: '/posts',
@@ -23,14 +24,6 @@ export default function CreatePost() {
     }
   })
   const { user } = state
-
-  function handleTitle(evt) {
-    setTitle(evt.target.value)
-  }
-
-  function handleContent(evt) {
-    setContent(evt.target.value)
-  }
 
   function handleCreate() {
     const newPost = { title, content, author: user }
@@ -49,10 +42,10 @@ export default function CreatePost() {
           name="create-title" 
           id="create-title" 
           value={title}
-          onChange={handleTitle}
+          {...bindTitle}
         />
       </div>
-      <textarea value={content} onChange={handleContent}></textarea>
+      <textarea value={content} {...bindContent}></textarea>
       <input type="submit" value="Create" />
     </form>
   )

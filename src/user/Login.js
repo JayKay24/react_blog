@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useResource } from 'react-request-hook'
+import { useInput } from 'react-hookedup'
 
 import { StateContext } from '../contexts'
 
 export default function Login() {
-  const [username, setUsername] = useState('')
+  const { value: username, bindToInput: bindUsername } = useInput('')
   const [loginFailed, setLoginfailed] = useState(false)
-  const [password, setPassword] = useState('')
+  const { value: password, bindToInput: bindPassword } = useInput('')
   const { dispatch } = useContext(StateContext)
   const [user, login] = useResource((username, password) => ({
     // in a real world application, use a POST request for login instead and send the password as part of the POST data
@@ -30,14 +31,6 @@ export default function Login() {
     }
   }, [dispatch, user])
 
-  function handleUsername(evt) {
-    setUsername(evt.target.value)
-  }
-
-  function handlePassword(evt) {
-    setPassword(evt.target.value)
-  }
-
   return (
     <form onSubmit={e => { e.preventDefault(); login(username, password)}}>
       <label htmlFor="login-username">Username:</label>
@@ -46,7 +39,7 @@ export default function Login() {
         name="login-username"
         id="login-username"
         value={username}
-        onChange={handleUsername}
+        {...bindUsername}
        />
       <label htmlFor="login-password">Password:</label>
       <input 
@@ -54,7 +47,7 @@ export default function Login() {
         name="login-password" 
         id="login-password"
         value={password}
-        onChange={handlePassword}
+        {...bindPassword}
       />
       <input type="submit" value="Login" disabled={username.length === 0} />
       {
