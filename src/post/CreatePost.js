@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useResource   } from 'react-request-hook'
 import { useNavigation } from 'react-navi'
 import { useInput } from 'react-hookedup'
+import { useDebouncedCallback } from 'use-debounce'
 import useUndo from 'use-undo' 
 
 import { StateContext } from '../contexts'
@@ -15,7 +16,16 @@ export default function CreatePost() {
     canUndo,
     canRedo
   }] = useUndo('')
-  const content =  undoContent.present
+  const [content, setInput] = useState('')
+  const [ setDebounce, cancelDebounce ] = useDebouncedCallback((value) => {
+    setContent(value)
+  }, 200)
+
+  useEffect(() => {
+    cancelDebounce()
+    setInput(undoContent.present)
+  }, [cancelDebounce, undoContent])
+
   const { state, dispatch } = useContext(StateContext)
   const [post ,createPost] = useResource(({ title, content, author }) => ({
     url: '/posts',
@@ -34,7 +44,9 @@ export default function CreatePost() {
   const { user } = state
 
   function handleContent(evt) {
-    setContent(evt.target.value)
+    const { value } = evt.target
+    setInput(value)
+    setDebounce(value)
   }
 
   function handleCreate() {
