@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import useWindowSize from '@rehooks/window-size'
 
 import { ThemeContext, StateContext } from '../contexts'
 
@@ -9,18 +10,22 @@ import CreatePost from '../post/CreatePost'
 
 export default function HeadeBar({ setTheme }) {
   const theme = useContext(ThemeContext)
+  const { innerWidth } = useWindowSize()
+  const mobilePhone = innerWidth < 640
 
   const { state } = useContext(StateContext)
   const { user } = state
   return (
     <div>
       <Header text="React Hooks Blog" />
-      <ChangeTheme theme={theme} setTheme={setTheme} />
-      <br />
+      {!mobilePhone && <ChangeTheme theme={theme} setTheme={setTheme} />}
+      {!mobilePhone && <br />}
+      {!mobilePhone && 
       <React.Suspense fallback={"Loading..."}>
         <UserBar />
       </React.Suspense>
-      <br />
+      }
+      {!mobilePhone && <br />}
       { user && <CreatePost /> }
     </div>
   )
