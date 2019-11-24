@@ -1,37 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useResource   } from 'react-request-hook'
+import React, { useEffect } from 'react'
 import { useNavigation } from 'react-navi'
 import { useInput } from 'react-hookedup'
-import { useDebouncedCallback } from 'use-debounce'
-import useUndo from 'use-undo' 
 
-import { StateContext } from '../contexts'
+import { useDispatch, useUserState, useAPICreatePost, useDebouncedUndo } from '../hooks'
 
 export default function CreatePost() {
   const { value: title, bindToInput: bindTitle } = useInput('')
-  const [undoContent, {
-    set: setContent,
-    undo,
-    redo,
-    canUndo,
-    canRedo
-  }] = useUndo('')
-  const [content, setInput] = useState('')
-  const [ setDebounce, cancelDebounce ] = useDebouncedCallback((value) => {
-    setContent(value)
-  }, 200)
 
-  useEffect(() => {
-    cancelDebounce()
-    setInput(undoContent.present)
-  }, [cancelDebounce, undoContent])
-
-  const { state, dispatch } = useContext(StateContext)
-  const [post ,createPost] = useResource(({ title, content, author }) => ({
-    url: '/posts',
-    method: 'post',
-    data: { title, content, author }
-  }))
+  const dispatch = useDispatch()
+  const [post ,createPost] = useAPICreatePost()
 
   const navigation = useNavigation()
 
@@ -41,12 +18,13 @@ export default function CreatePost() {
       navigation.navigate(`/view/${post.data.id}`)
     }
   })
-  const { user } = state
+  const user = useUserState()
+
+  const [content, setContent, { undo, redo, canUndo, canRedo }] = useDebouncedUndo()
 
   function handleContent(evt) {
     const { value } = evt.target
-    setInput(value)
-    setDebounce(value)
+    setContent(value)
   }
 
   function handleCreate() {

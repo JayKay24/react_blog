@@ -1,23 +1,22 @@
-import React, { useContext, useEffect } from 'react'
-import { useResource } from 'react-request-hook'
+import React, { useEffect } from 'react'
 import { useInput } from 'react-hookedup'
 
-import { StateContext } from '../contexts'
+import { useDispatch, useAPIRegister } from '../hooks'
+
+function useRegisterEffect(user, dispatch) {
+  useEffect(() => {
+    if(user && user.data) dispatch({ type: 'REGISTER', username: user.data.username })
+  }, [dispatch, user])
+}
 
 export default function Register() {
   const { value: username, bindToInput: bindUsername } = useInput('')
   const { value: password, bindToInput: bindPassword } = useInput('')
   const { value: passwordRepeat, bindToInput: bindPasswordRepeat } = useInput('')
-  const [user, register] = useResource((username, password) => ({
-    url: '/users',
-    method: 'post',
-    data: { username, password }
-  }))
-  const { dispatch } = useContext(StateContext)
+  const [user, register] = useAPIRegister()
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    if(user && user.data) dispatch({ type: 'REGISTER', username: user.data.username })
-  }, [dispatch, user])
+  useRegisterEffect(user, dispatch)
 
   return (
     <form onSubmit={e => { e.preventDefault(); register(username, password)}}>

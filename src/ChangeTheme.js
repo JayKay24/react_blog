@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useResource } from 'react-request-hook'
+import { useAPIThemes } from './hooks'
 
 
 function ThemeItem({ theme, active, onClick }) {
@@ -12,7 +12,7 @@ function ThemeItem({ theme, active, onClick }) {
 }
 
 export default function ChangeTheme({ theme, setTheme }) {
-  const [themes, getThemes] = useResource(() => ({ url: '/themes', method: 'get' }))
+  const [themes, getThemes] = useAPIThemes()
   const { data, isLoading } = themes
 
   useEffect(getThemes, [])
