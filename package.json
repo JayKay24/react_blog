@@ -12,7 +12,7 @@
     "react-dom": "^16.11.0",
     "react-navi": "^0.13.6",
     "react-request-hook": "^2.1.1",
-    "react-scripts": "3.2.0"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "npx concurrently \"npm run start:server\" \"npm run start:client\"",
